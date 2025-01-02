@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_color">
+
+    <!-- Top App Bar -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:elevation="4dp"
+        app:title="Heartbeat"
+        app:titleTextColor="@color/white"
+        app:menu="@menu/main_menu"/>
+
+    <!-- Background hearts that will float -->
+    <ImageView
+        android:id="@+id/backgroundHeart1"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_below="@id/toolbar"
+        android:alpha="0.3"
+        android:src="@drawable/ic_heart"
+        android:visibility="invisible"/>
+
+    <ImageView
+        android:id="@+id/backgroundHeart2"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_below="@id/toolbar"
+        android:alpha="0.3"
+        android:src="@drawable/ic_heart"
+        android:visibility="invisible"/>
+
+    <!-- Connection status indicator -->
+    <TextView
+        android:id="@+id/statusText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/toolbar"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="32dp"
+        android:textSize="16sp"
+        android:text="Connected with ❤️"
+        android:alpha="0.7"/>
+
+    <!-- Main heart container for ripple effect -->
+    <RelativeLayout
+        android:id="@+id/heartContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true">
+
+        <!-- Ripple circles -->
+        <View
+            android:id="@+id/rippleCircle1"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/circle_background"
+            android:alpha="0"/>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true">
+
+            <View
+                android:id="@+id/rippleCircle2"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_gravity="center"
+                android:background="@drawable/circle_background"
+                android:alpha="0"/>
+        </FrameLayout>
+
+        <!-- Main heart button -->
+        <ImageButton
+            android:id="@+id/heartButton"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_centerInParent="true"
+            android:background="@null"
+            android:src="@drawable/ic_heart"
+            android:scaleX="0.5"
+            android:scaleY="0.5"
+            android:scaleType="fitCenter"/>
+    </RelativeLayout>
+
+    <!-- Last heartbeat time -->
+    <TextView
+        android:id="@+id/lastHeartbeatText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/heartContainer"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="32dp"
+        android:textSize="14sp"
+        android:alpha="0.6"/>
+
+</RelativeLayout>

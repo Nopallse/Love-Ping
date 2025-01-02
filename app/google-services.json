@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "147635448388",
+    "project_id": "love-ping",
+    "storage_bucket": "love-ping.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:147635448388:android:8c26ae0db393d2d2a02a11",
+        "android_client_info": {
+          "package_name": "com.example.loveping"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "147635448388-hojgeuk5a0lhfldsl2dtv77uiof4qibq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.loveping",
+            "certificate_hash": "98b71cd75faa3089c6af5b2eee12fd6503917bd0"
+          }
+        },
+        {
+          "client_id": "147635448388-sgt0cmgu0obop9p8dse82apaum4u8537.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB2AYOLC6WrJCp_Etqm_2dCvE9Y6oEt06o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "147635448388-sgt0cmgu0obop9p8dse82apaum4u8537.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
