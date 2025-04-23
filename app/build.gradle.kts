@@ -58,6 +58,7 @@ dependencies {
     implementation (libs.firebase.firestore)
     implementation (libs.google.firebase.messaging)
     implementation ("androidx.work:work-runtime-ktx:2.7.0")
+    implementation ("de.hdodenhof:circleimageview:3.1.0")
 
     implementation ("com.google.code.gson:gson:2.10.1")
 

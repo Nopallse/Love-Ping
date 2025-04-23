@@ -1,6 +1,7 @@
 package com.example.loveping
 
 import android.content.Context
+import android.util.Log
 import com.google.gson.Gson
 
 class PreferenceManager(context: Context) {
@@ -11,6 +12,7 @@ class PreferenceManager(context: Context) {
         private const val KEY_PARTNER_TOKEN = "partner_token"
         private const val KEY_USER_DATA = "user_data"
         private const val KEY_PARTNER_DATA = "partner_data"
+        private const val KEY_LAST_HEARTBEAT_TIME = "last_heartbeat_time"
     }
 
     fun savePartnerToken(token: String?) {
@@ -44,6 +46,22 @@ class PreferenceManager(context: Context) {
             gson.fromJson(json, dataUser::class.java)
         } else null
     }
+
+    // Method to specifically clear partner data
+    fun clearPartnerData() {
+        prefs.edit()
+            .remove(KEY_PARTNER_TOKEN)
+            .remove(KEY_PARTNER_DATA)
+            .apply()
+    }
+
+    fun saveLastHeartbeatTime(timestamp: Long) {
+        prefs.edit().putLong(KEY_LAST_HEARTBEAT_TIME, timestamp).apply()
+    }
+
+
+
+
 
     fun clearAll() {
         prefs.edit().clear().apply()

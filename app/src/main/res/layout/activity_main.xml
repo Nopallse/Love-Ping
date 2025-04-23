@@ -3,79 +3,178 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background_color">
+    android:background="@color/pastel_background">
+
+    <!-- Gradient Background -->
+    <View
+        android:id="@+id/backgroundGradient"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/pastel_pink_gradient" />
 
     <!-- Top App Bar -->
-    <androidx.appcompat.widget.Toolbar
+    <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
-        android:elevation="4dp"
-        app:title="Heartbeat"
-        app:titleTextColor="@color/white"
-        app:menu="@menu/main_menu"/>
+        android:background="@drawable/toolbar_gradient"
+        android:elevation="0dp"
+        app:menu="@menu/main_menu"
+        app:title="LovePing"
+        app:titleTextAppearance="@style/ToolbarTitleStyle"
+        app:titleTextColor="@color/white" />
 
-    <!-- Background hearts that will float -->
+    <!-- Partner name and status card -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/partnerCard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/toolbar"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="24dp"
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="4dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/partnerAvatar"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:src="@drawable/default_avatar"
+                app:civ_border_color="@color/pastel_pink_dark"
+                app:civ_border_width="2dp" />
+
+            <TextView
+                android:id="@+id/partnerName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@id/partnerAvatar"
+                android:layout_marginStart="16dp"
+                android:layout_toEndOf="@id/partnerAvatar"
+                android:text="Partner Name"
+                android:textColor="@color/text_primary"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/statusText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/partnerName"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="4dp"
+                android:layout_toEndOf="@id/partnerAvatar"
+                android:alpha="0.7"
+                android:text="Connected with ❤️"
+                android:textColor="@color/text_secondary"
+                android:textSize="14sp" />
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+
+    <!-- Background decorative elements -->
     <ImageView
-        android:id="@+id/backgroundHeart1"
+        android:id="@+id/decorBubble1"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_below="@id/partnerCard"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        android:alpha="0.3"
+        android:src="@drawable/bubble_shape" />
+
+    <ImageView
+        android:id="@+id/decorBubble2"
         android:layout_width="70dp"
         android:layout_height="70dp"
-        android:layout_below="@id/toolbar"
-        android:alpha="0.3"
-        android:src="@drawable/ic_heart"
-        android:visibility="invisible"/>
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="80dp"
+        android:alpha="0.2"
+        android:src="@drawable/bubble_shape" />
 
-    <ImageView
-        android:id="@+id/backgroundHeart2"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_below="@id/toolbar"
-        android:alpha="0.3"
-        android:src="@drawable/ic_heart"
-        android:visibility="invisible"/>
-
-    <!-- Connection status indicator -->
-    <TextView
-        android:id="@+id/statusText"
-        android:layout_width="wrap_content"
+    <!-- Last heartbeat card (positioned at bottom) -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/lastHeartbeatCard"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/toolbar"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="32dp"
-        android:textSize="16sp"
-        android:text="Connected with ❤️"
-        android:alpha="0.7"/>
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="40dp"
+        android:layout_marginBottom="32dp"
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="4dp">
 
-    <!-- Main heart container for ripple effect -->
+        <TextView
+            android:id="@+id/lastHeartbeatText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:alpha="0.8"
+            android:gravity="center"
+            android:padding="12dp"
+            android:text="Waiting for heartbeats..."
+            android:textColor="@color/pastel_pink_dark"
+            android:textSize="14sp" />
+    </androidx.cardview.widget.CardView>
+
+    <!-- Main heart container (full screen between partner card and last heartbeat card) -->
     <RelativeLayout
         android:id="@+id/heartContainer"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_centerInParent="true">
 
-        <!-- Ripple circles -->
+        <!-- Background hearts that will float -->
+        <ImageView
+            android:id="@+id/backgroundHeart1"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:alpha="0.3"
+            android:src="@drawable/ic_heart_filled"
+            android:visibility="invisible" />
+
+        <ImageView
+            android:id="@+id/backgroundHeart2"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:alpha="0.3"
+            android:src="@drawable/ic_heart_filled"
+            android:visibility="invisible" />
+
+        <!-- Ripple circles centered around the heart button -->
         <View
             android:id="@+id/rippleCircle1"
+            android:layout_width="240dp"
+            android:layout_height="240dp"
+            android:layout_centerInParent="true"
+            android:alpha="0"
+            android:background="@drawable/circle_ripple_pink" />
+
+        <View
+            android:id="@+id/rippleCircle2"
+            android:layout_width="240dp"
+            android:layout_height="240dp"
+            android:layout_centerInParent="true"
+            android:alpha="0"
+            android:background="@drawable/circle_ripple_pink" />
+
+        <!-- Heart shadow (for depth effect) -->
+        <ImageView
+            android:id="@+id/heartShadow"
             android:layout_width="200dp"
             android:layout_height="200dp"
             android:layout_centerInParent="true"
-            android:background="@drawable/circle_background"
-            android:alpha="0"/>
-
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_centerInParent="true">
-
-            <View
-                android:id="@+id/rippleCircle2"
-                android:layout_width="200dp"
-                android:layout_height="200dp"
-                android:layout_gravity="center"
-                android:background="@drawable/circle_background"
-                android:alpha="0"/>
-        </FrameLayout>
+            android:layout_marginTop="4dp"
+            android:alpha="0.2"
+            android:padding="15dp"
+            android:src="@drawable/ic_heart_filled"
+            app:tint="@color/pastel_pink_dark" />
 
         <!-- Main heart button -->
         <ImageButton
@@ -84,21 +183,22 @@
             android:layout_height="200dp"
             android:layout_centerInParent="true"
             android:background="@null"
-            android:src="@drawable/ic_heart"
-            android:scaleX="0.5"
-            android:scaleY="0.5"
-            android:scaleType="fitCenter"/>
+            android:padding="15dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_heart_filled"
+            app:tint="@color/pastel_pink_primary" />
+
+        <!-- Tap instruction -->
+        <TextView
+            android:id="@+id/tapInstructionText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/heartButton"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="16dp"
+            android:alpha="0.7"
+            android:text="Tap to send a heartbeat ❤️"
+            android:textColor="@color/text_primary"
+            android:textSize="16sp" />
     </RelativeLayout>
-
-    <!-- Last heartbeat time -->
-    <TextView
-        android:id="@+id/lastHeartbeatText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/heartContainer"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="32dp"
-        android:textSize="14sp"
-        android:alpha="0.6"/>
-
 </RelativeLayout>

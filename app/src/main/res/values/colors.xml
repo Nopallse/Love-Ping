@@ -1,11 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
-    <color name="background_color">#FFFFFF</color>
-    <color name="heart_color">#FF4081</color>
-    <color name="ripple_color">#FFB6C1</color>
-    <color name="colorPrimary">#FF4081</color>
-    <color name="colorPrimaryVariant">#FFB6C1</color>
-    <color name="colorSecondary">#FF9CBF</color>
+    <!-- Base theme colors -->
+    <color name="colorPrimary">#FF8FB0</color>
+    <color name="colorPrimaryDark">#FF82A5</color>
+    <color name="colorAccent">#FF6291</color>
+
+    <!-- Pastel pink theme -->
+    <color name="pastel_background">#FFF3F8</color>
+    <color name="pastel_pink_primary">#FF8FB0</color>
+    <color name="pastel_pink_light">#FFCCE1</color>
+    <color name="pastel_pink_dark">#FF6291</color>
+    <color name="pastel_pink_accent">#FFAEC9</color>
+
+    <!-- Text colors -->
+    <color name="text_primary">#515151</color>
+    <color name="text_secondary">#7D7D7D</color>
+
+    <!-- Standard colors -->
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="background_color">@color/pastel_background</color>
 </resources>

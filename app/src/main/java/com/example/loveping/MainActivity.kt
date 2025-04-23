@@ -99,11 +99,25 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        // Set initial state for last heartbeat text
+        binding.lastHeartbeatText.text = "Waiting for heartbeats..."
+
         // Listen for heartbeats while app is in foreground
         listenToHeartbeats()
+
+        // Update partner data from preferences if available
+        updatePartnerInfoUI()
     }
 
-    @SuppressLint("SetTextI18n")
+    private fun updatePartnerInfoUI() {
+        val partner = preferenceManager.getPartnerData()
+        partner?.let {
+            binding.partnerName.text = it.name
+            binding.statusText.text = "Connected with ❤️"
+        }
+    }
+
+    @SuppressLint("SetTextI18")
     private fun getPartnerData(uid: String) {
         db.collection("users")
             .whereNotEqualTo("id", uid)
@@ -122,6 +136,20 @@ class MainActivity : AppCompatActivity() {
                             id = it["id"] as? String ?: "",
                             gender = it["gender"] as? String ?: ""
                         )
+                    }
+
+                    // Update UI with partner data
+                    dataPartner?.let { partnerData ->
+                        runOnUiThread {
+                            binding.partnerName.text = partnerData.name
+                            binding.statusText.text = "Connected with ❤️"
+
+                            // Animate the partner card to draw attention
+                            ObjectAnimator.ofFloat(binding.partnerCard, "alpha", 0.7f, 1f).apply {
+                                duration = 500
+                                start()
+                            }
+                        }
                     }
                 }
             }
@@ -143,6 +171,126 @@ class MainActivity : AppCompatActivity() {
                 }
             }
     }
+
+
+    private fun animateRipple(view: View, delay: Long) {
+        view.alpha = 1f
+        view.scaleX = 1f
+        view.scaleY = 1f
+
+        val scaleX = ObjectAnimator.ofFloat(view, "scaleX", 1f, 2f)
+        val scaleY = ObjectAnimator.ofFloat(view, "scaleY", 1f, 2f)
+        val alpha = ObjectAnimator.ofFloat(view, "alpha", 1f, 0f)
+
+        AnimatorSet().apply {
+            playTogether(scaleX, scaleY, alpha)
+            startDelay = delay
+            duration = 1000
+            interpolator = LinearInterpolator()
+            start()
+        }
+    }
+
+    private fun animateReceivedHeartbeat() {
+        Log.d("MainActivity", "Animating received heartbeat")
+
+        // Vibrating animation for the heart button
+        val translateX = ObjectAnimator.ofFloat(binding.heartButton, "translationX", 0f, -10f, 10f, -10f, 10f, -5f, 5f, 0f)
+        val scaleX = ObjectAnimator.ofFloat(binding.heartButton, "scaleX", 1f, 1.4f, 1f)
+        val scaleY = ObjectAnimator.ofFloat(binding.heartButton, "scaleY", 1f, 1.4f, 1f)
+
+        AnimatorSet().apply {
+            playTogether(translateX, scaleX, scaleY)
+            duration = 800
+            interpolator = AccelerateDecelerateInterpolator()
+            start()
+        }
+
+        // Animate shadow (if available in new layout)
+        if (binding.heartShadow != null) {
+            val shadowTranslateX = ObjectAnimator.ofFloat(binding.heartShadow, "translationX", 0f, -8f, 8f, -8f, 8f, -4f, 4f, 0f)
+            val shadowScaleX = ObjectAnimator.ofFloat(binding.heartShadow, "scaleX", 1f, 1.2f, 1f)
+            val shadowScaleY = ObjectAnimator.ofFloat(binding.heartShadow, "scaleY", 1f, 1.2f, 1f)
+
+            AnimatorSet().apply {
+                playTogether(shadowTranslateX, shadowScaleX, shadowScaleY)
+                duration = 800
+                startDelay = 50
+                interpolator = AccelerateDecelerateInterpolator()
+                start()
+            }
+        }
+
+        // Ripple effect
+        animateRipple(binding.rippleCircle1, 0)
+        animateRipple(binding.rippleCircle2, 150)
+
+        // Animate floating hearts
+        animateFloatingHeart()
+
+        // Update last heartbeat time
+        updateLastHeartbeatTime("Received heartbeat: Just now")
+
+        // Update instruction text if available in new layout
+        if (binding.tapInstructionText != null) {
+            updateInstructionText("Heartbeat received ❤️")
+        }
+    }
+
+    private fun updateInstructionText(text: String) {
+        val originalText = "Tap to send a heartbeat ❤️"
+
+        binding.tapInstructionText.text = text
+        binding.tapInstructionText.alpha = 1f
+
+        // Create animation to show the text prominently
+        val scaleX = ObjectAnimator.ofFloat(binding.tapInstructionText, "scaleX", 1f, 1.15f, 1f)
+        val scaleY = ObjectAnimator.ofFloat(binding.tapInstructionText, "scaleY", 1f, 1.15f, 1f)
+
+        AnimatorSet().apply {
+            playTogether(scaleX, scaleY)
+            duration = 800
+            interpolator = OvershootInterpolator()
+            start()
+        }
+
+        // Restore original text after a delay
+        binding.tapInstructionText.postDelayed({
+            binding.tapInstructionText.text = originalText
+            ObjectAnimator.ofFloat(binding.tapInstructionText, "alpha", 1f, 0.7f).apply {
+                duration = 500
+                start()
+            }
+        }, 3000)
+    }
+
+    private fun updateLastHeartbeatTime(message: String = "Last heartbeat: Just now") {
+        binding.lastHeartbeatText.text = message
+        binding.lastHeartbeatText.alpha = 1f
+
+        ObjectAnimator.ofFloat(binding.lastHeartbeatText, "alpha", 1f, 0.8f).apply {
+            duration = 1000
+            startDelay = 1000
+            start()
+        }
+
+        // Add subtle pulse animation to the card
+        if (binding.lastHeartbeatCard != null) {
+            val scaleX = ObjectAnimator.ofFloat(binding.lastHeartbeatCard, "scaleX", 1f, 1.05f, 1f)
+            val scaleY = ObjectAnimator.ofFloat(binding.lastHeartbeatCard, "scaleY", 1f, 1.05f, 1f)
+
+            AnimatorSet().apply {
+                playTogether(scaleX, scaleY)
+                duration = 500
+                interpolator = OvershootInterpolator()
+                start()
+            }
+        }
+    }
+
+
+
+
 
     private fun startHeartbeatService() {
         val serviceIntent = Intent(this, HeartbeatService::class.java)
@@ -177,23 +325,6 @@ class MainActivity : AppCompatActivity() {
         updateLastHeartbeatTime()
     }
 
-    private fun animateRipple(view: View, delay: Long) {
-        view.alpha = 1f
-        view.scaleX = 1f
-        view.scaleY = 1f
-
-        val scaleX = ObjectAnimator.ofFloat(view, "scaleX", 1f, 2f)
-        val scaleY = ObjectAnimator.ofFloat(view, "scaleY", 1f, 2f)
-        val alpha = ObjectAnimator.ofFloat(view, "alpha", 1f, 0f)
-
-        AnimatorSet().apply {
-            playTogether(scaleX, scaleY, alpha)
-            startDelay = delay
-            duration = 1000
-            interpolator = LinearInterpolator()
-            start()
-        }
-    }
 
     private fun animateFloatingHeart() {
         val heart = if (Math.random() > 0.5) binding.backgroundHeart1 else binding.backgroundHeart2
@@ -247,7 +378,7 @@ class MainActivity : AppCompatActivity() {
                 snapshots?.documentChanges?.forEach { doc ->
                     if (doc.type == DocumentChange.Type.ADDED) {
                         vibrate()
-                        animateHeart()
+                        animateReceivedHeartbeat()
                     }
                 }
             }

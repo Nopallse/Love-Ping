@@ -24,6 +24,7 @@ class UserAdapter(
         with(holder.binding) {
             userName.text = user.name
             userEmail.text = user.email
+            pairButton.text = "Send Request" // Changed from "Pair"
             pairButton.setOnClickListener { onPairClick(user) }
         }
     }
